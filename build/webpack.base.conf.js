@@ -3,14 +3,14 @@ var utils = require('./utils')
 var config = require('../config')
 var vueLoaderConfig = require('./vue-loader.conf')
 
-var entries =  utils.getMultiEntry('./src/'+config.moduleName+'/**/*.js'); // 获得入口js文件
-
 function resolve(dir) {
     return path.join(__dirname, '..', dir);
 }
 
 module.exports = {
-    entry: entries,
+    entry: {
+        app: './src/main.js'
+    },
     output: {
         path: config.build.assetsRoot,
         filename: '[name].js',

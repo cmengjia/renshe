@@ -12,6 +12,10 @@
                 <mt-badge size="small" color="#fc5461"></mt-badge>
             </div>
         </mt-tab-item>
+        <router-link to="/info">
+        电子邮件
+        
+        </router-link>
 		<mt-tab-item id="1">电子邮件
             <div class="info-badge" v-show="unread">
                 <mt-badge size="small" color="#fc5461"></mt-badge>

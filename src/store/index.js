@@ -16,4 +16,15 @@ store.registerModule('JCFE', {
     }
 });
 
+store.registerModule('MAIL', {
+    state: {
+        isfooterState: true
+    },
+    mutations: {
+        footerState(state, payload) {
+            state.isfooterState = payload.isfooterState
+        }
+    }
+})
+
 export default store;
