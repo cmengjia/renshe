@@ -6,34 +6,28 @@
             <table>
                 <tr>
                     <td class="option">工作方面</td>
-                    <td class="content">就业创业工作</td>
+                    <td class="content">{{basicInformation.gzfm}}</td>
                 </tr>
                 <tr>
                     <td class="option">工作项目</td>
-                    <td class="content"> 建立就业工作目标责任制考评机制（创新工作）</td>
+                    <td class="content">{{basicInformation.gzxm}}</td>
                 </tr>
             </table>
             <div class="par-title">详细信息</div>
-            <div class="par-title">汇报详细</div>
+            <p>{{detailedInformation.xxxx}}</p>
+            <div class="par-title" v-for="rd in reportDetail" :key="rd.id">汇报详细</div>
             <div>
-                <p><span>郭晓</span><span>推进状态：</span><span style="color: green">正常</span></p>
-                <p><span>推进情况：</span>考核和表彰工作的考评表已下发至各下级单位</p>
+                <p><span>{{rd.user}}</span><span>推进状态：</span><span style="color: green">{{rd.zt}}</span></p>
+                <p><span>推进情况：</span>{{rd.tjzk}}</p>
                 <p><span>相关附件</span><a href="#">链接</a></p>
-                <span>2017-11-12</span>
+                <span>{{rd.date}}</span>
             </div>
-            <div>
-                <p><span>张丽娜  </span><span>推进状态：</span><span style="color: red">滞后</span></p>
-                <p><span>推进情况：</span>考核和表彰工作的考评表已下发至各下级单位</p>
-                <p><span>相关附件</span><a href="#">链接</a></p>
-                <span>2017-11-12</span>
-            </div>
-            <div class="par-title">下级任务列表</div>
-            <p>没有下级任务</p>
+            <div class="par-title" v-for="sdt in subordinateTaskList" :key="sdt.id">下级任务列表</div>
+            <p>{{sdt.rw}}</p>
             <div class="par-title">领导审批</div>
-            <p>王文远：同意，请按照工作措施详细的开展工作</p>
+            <p><span>{{leadExamine.user}}</span>{{leadExamine.yj}}</p>
             <div class="par-title">领导批注</div>
-            <div> 曹宇光： 请按照XX管理办法正常推进<a href="#">回复</a></div>
-            <div> 曹宇光： 请按照XX管理办法正常推进<a href="#">回复</a></div>
+            <div v-for="lp in leadPostilList"><span>{{lp.user}}</span>{{lpl.nr}}<a href="#">回复</a></div>
             <textarea style="width: 90%">
             fjgknkjsc
             </textarea>
@@ -42,7 +36,24 @@
     </div>
 </template>
 <script>
-    export default {}
+    export default {
+        data(){
+            return{
+                //基本信息
+                basicInformation:{ },
+                //详细信息
+                detailedInformation:{ },
+                //汇报详细
+                reportDetail:[ ],
+                //下级任务列表
+                subordinateTaskList:[ ],
+                //领导审批
+                leadExamine:{ },
+                //领导批注
+                leadPostil:[ ]
+            }
+        }
+    }
 </script>
 
 <style lang="scss">
