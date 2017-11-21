@@ -2,32 +2,37 @@
     <div class="fd">
         <div class="flow" @click.stop="hideApprove" >
             <div class="flow-detail" id="flow-detail" ref="viewBox" v-on:scroll="scrolls">
-                <mt-cell title="标题" >
-                    <span>{{senddetails.title}}</span>
+                <mt-cell title="来文单位" >
+                    <span>{{redetails.sendDept}}</span>
+                </mt-cell>
+                <mt-cell title="来文文号">
+                    <span>{{redetails.noValue}}号</span>
                 </mt-cell>
                 <mt-cell title="密级" >
-                    <span>{{senddetails.secretValue}}</span>
+                <span>{{redetails.secretValue}}</span>
                 </mt-cell>
-                <mt-cell title="页数">  
-                        <span>{{senddetails.printPage}}</span>
-                    </mt-cell>
-                <mt-cell title="份数" >
-                    <span>{{senddetails.printNum}}</span>
+                <mt-cell title="文件日期">  
+                    <span>{{redetails.remark17}}</span>
                 </mt-cell>
-                <mt-cell title="主送" >
-                    <span>{{senddetails.subtitle}}</span>
+                <mt-cell title="收文日期" >
+                    <span>{{redetails.receiveDate}}</span>
                 </mt-cell>
-                <mt-cell title="抄送" >
-                    <span>{{senddetails.copySendUserName}}</span>
+                <mt-cell title="紧急程度" >
+                    <span>{{redetails.priorityValue}}</span>
                 </mt-cell>
-                <mt-cell title="信息公开方式" >
-                    <span>{{senddetails.addPrintCount}}</span>
+                <mt-cell title="收文分类" >
+                    <span>{{redetails.docTypeValue}}</span>
                 </mt-cell>
-                <div style="text-align: center;transform: translateY(25px);" v-if="senddetails.pdfUrl">
-                    <mt-button plain type="primary" size="small" @click="queryMain(senddetails.pdfUrl)">查看正文</mt-button>
-                </div>
-               <!-- <button @click="pdfview">PDF</button>-->
-                <div class="advice" ref="advice" :class="{nobtn: !senddetails.pdfUrl}">
+                <mt-cell title="来文编号" >
+                    <span>{{redetails.secretValue}}</span>
+                </mt-cell>
+                <mt-cell title="页数" >
+                    <span>{{redetails.total}}</span>
+                </mt-cell>
+                <mt-cell title="文件标题" >
+                    <span>{{redetails.title}}</span>
+                </mt-cell>
+                <div class="advice" ref="advice">
                     <a class="advice-title"  @click="suggest" ref="suggest">流转意见</a>
                     <div class="advice-content">
                         <p v-if="suggestMap.length < 1" style="text-align:center;font-size:14px;color:#999;">暂无流转意见</p>
@@ -54,10 +59,21 @@
                             </div>
                         </div>
                     </div>
-                </div> 
-            
+                </div>  
             </div>
-            <Examine ref="examine" :fn-btn2="onSubmit" :status.sync="isShow" :showing="shows" :types="apptypes"></Examine>
+            
+            <!-- message进行配置常用词
+	            btnText1配置第一个按钮显示文字
+	            btnText2配置第二个按钮显示文字
+	            fnSign  签批回调
+	            fnBtn1  第一个按钮回调
+	            fnBtn2  第二个按钮回调
+	 			types   进行组件类型配置(布尔型，默认是true)
+	            readOnly是否可写(默认为false)
+                showing 是否可以审批
+	            *** 必填参数 *** status.sync 控制控制审批的显隐,需添加sync修饰符
+	        -->
+	        <Examine ref="examine" :fn-btn2="onSubmit" :status.sync="isShow" :showing="shows" :types="apptypes"></Examine>
 
             <!-- popupVisible 控制显隐
 	            nodeList 可选节点列表
@@ -76,7 +92,6 @@
 
 
         </div>
-        
     </div>
 </template>
  
@@ -88,10 +103,9 @@
  
     import Util from '@/libs/util.js';
     
-     import JcApprove from '@/components/approve';
-     import PdfView from '@/components/pdfview';
+ 	import JcApprove from '@/components/approve';
     
-    let pdf = new PdfView();
+    //let pdf = new PdfView();
 
     export default {
         components: {
@@ -109,7 +123,7 @@
         },
         data() {
             return {
-                senddetails: [],
+                redetails: [],
                 isShow: false,
                 popupVisible: false,
                 nodeList:[],
@@ -134,15 +148,12 @@
             
         },
         methods: {
-            queryMain(url){
-                pdf.show(url);
-            },
             getDetail: function(){
                 let _this = this;
                 this.$route.query.selected != '1'? this.shows=false : this.shows=true;
                 if (this.$route.query && this.$route.query.id) {
                     _this.submitParams = _this.$route.query;
-                    _this.Api.DOC.getSendDetail({
+                    _this.Api.DOC.getReceiveDetail({
                         id: _this.$route.query.id,
                         definitionId: _this.$route.query.definitionId_,
                         nodeId: _this.$route.query.nodeId,
@@ -150,14 +161,14 @@
                         instanceId: _this.$route.query.instanceId_,
                         selected:_this.$route.query.selected
                     }).then((res) =>{
-                        _this.$set(_this, 'senddetails', res.data.body);
-                        _this.senddetails.editSuggestName ? _this.apptypes = true :  _this.apptypes = false;
+                        _this.$set(_this, 'redetails', res.data.body);
+                        _this.redetails.editSuggestName ? _this.apptypes = true :  _this.apptypes = false;
                          _this.suggestMap =  Object.keys(res.data.body.suggestMap).map((item)=>{
                             return res.data.body.suggestMap[item];
                             
                         });
-                        _this.submitParams.id = _this.senddetails.id;
-		        		_this.submitParams.editSuggestName = _this.senddetails.editSuggestName;
+                        _this.submitParams.id = _this.redetails.id;
+		        		_this.submitParams.editSuggestName = _this.redetails.editSuggestName;
                     }).catch((error) =>{
                         Toast({message:' 请求失败!!!'});
                     });
@@ -219,7 +230,7 @@
             onSave(){
             	let _this = this;
             	_this.submitParams['signature'] = "";//手写数据 暂时为空
-           		_this.Api.DOC.saveSendApproval(_this.submitParams).then((res)=>{
+           		_this.Api.DOC.saveReceiveApproval(_this.submitParams).then((res)=>{
                     if(res.data.code === '000000'){
                         Toast({message: '提交成功...'});
                          _this.$router.go(-1);
@@ -235,9 +246,8 @@
  
  
 <style lang="scss">
-  @import '../../../assets/sass/base.scss';
- 
-    .flow{
+  	@import '../../assets/sass/params';
+ 	.flow{
 	 	.mint-actionsheet-listitem {
 	        height: 50px;
 	        line-height: 50px;

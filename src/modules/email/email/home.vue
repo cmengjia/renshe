@@ -9,8 +9,9 @@
             </mt-tab-item>
             <mt-tab-item id="2">收件箱</mt-tab-item>
             <mt-tab-item id="3"><i class="jcm-biaoxing"></i>邮件</mt-tab-item>
-            <mt-tab-item id="4" v-show="false">草稿箱</mt-tab-item>
+            <mt-tab-item id="4">草稿箱</mt-tab-item>
             <mt-tab-item id="5">已发送</mt-tab-item>
+            <router-link to="/mail/compose">写邮件</router-link>
         </mt-navbar>
         <mt-search v-model="search" placeholder="搜索"></mt-search>
         <div ref="wrapper" class="page-infinite">
@@ -47,9 +48,9 @@
     const URL_LIST = {
         '1': 'unReadMail',
         '2': 'receiveMail',
-        '3': 'mailRtx',
-        '4': 'manageDraft',
-        '5': 'manageSend'
+        '3': 'starMail',
+        '4': 'draftMail',
+        '5': 'sendMailManage'
     }
     export default {
         beforeRouteEnter(to, from, next){

@@ -234,7 +234,8 @@ export default {
                 },
                 style: 'jcimg',
 		        label: '<i class="jcm-shangchuanfujian"></i>',
-                server: 'http://192.168.140.14:9580/jcmp/gateway/api/v1/emailUpload',
+                //server: 'http://192.168.140.14:9580/jcmp/gateway/api/v1/emailUpload',
+                server: 'http://192.168.150.15:8000/goa/gateway/api/v1/saveAttach',
                 targetHandler(file){
                     if(file.ext == "jpg" || file.ext == "jpeg" || file.ext == "gif" || file.ext == "png" || file.ext == "bmp" || file.ext == "svg"){
                         file.url = file.url;

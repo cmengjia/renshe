@@ -130,7 +130,7 @@
 				var str = JSON.stringify(this.emailData);
 　　			   //存入
 　　			   window.sessionStorage.setItem('replyData',str);
-				this.$router.push({ path: '/compose', query: { plan: type }});
+				this.$router.push({ path: '/mail/compose', query: { plan: type }});
 				//this.$router.push({ name: 'Compose',params:});
 			},
 			isShow(){
@@ -160,7 +160,7 @@
 				var str = JSON.stringify(this.emailData);
 　　			   //存入
 　　			   window.sessionStorage.setItem('replyData',str);
-				this.$router.push({ path: '/compose', query: { repeat: type }});
+				this.$router.push({ path: '/mail/compose', query: { repeat: type }});
 			},
 			addStarRtx(){
 				let _this = this;
@@ -201,7 +201,7 @@
 					_this.emailData,_this.selected
 				).then(function(res) {
 					if(res.data.code === '000000'){
-						_this.$router.replace({ path: '/home', query: { selected: _this.$route.query.selected }});
+						_this.$router.replace({ path: '/mail/home', query: { selected: _this.$route.query.selected }});
 					}
 				})
 			},

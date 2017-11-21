@@ -2,59 +2,24 @@
     <div class="archives-untreated info-wrapper" @click.stop="ctype ? ctype=false : ''">
         <div class="page-navbar">
             <mt-navbar v-model="selected">
-                <mt-tab-item id="1">待办公文</mt-tab-item>
-                <mt-tab-item id="2">收文查询</mt-tab-item>
-                <mt-tab-item id="3">发文查询</mt-tab-item>
+                <mt-tab-item id="1">待办查询</mt-tab-item>
+                <mt-tab-item id="2">已办查询</mt-tab-item>
             </mt-navbar>
-            <form action="" class="pagesearch">
-                <div>
-                    <a class="search-type" href="javascript:void(0);" @click.stop="ctype = !ctype">
-                        <span >类型</span>
-                        <label :style="{'transform' : 'rotate(' + (ctype ? 180 : 0) + 'deg)'}" class="type-button"></label>
-                    </a>
-                    <div class="mint-popup-1" v-show="ctype">
-                        <span class="triangle-1"></span>
-                        <ul class="flow-infor">
-                            <li @click.stop="filterFlowData('all')">全部类型</li>
-                            <li @click.stop="filterFlowData(flow.definitionId)" v-for="flow in flowsData" :key="flow.definitionId">{{flow.flowName}}</li>
-                        </ul>
-                    </div>
-                </div>
-                <input type="search" :style="{ width: searchWidth }" placeholder="搜索" v-model="val">
-                <i class="mintui mintui-search"></i>
-            </form>
             <div ref="wrapper">
-                <div v-show="selected == '1'" style="width: 100%;">
+                <div style="width: 100%;">
                     <div class="untreatedList" :style="{ height: wrapperHeight + 'px'}">
-                        <router-link class="mint-cell" v-for="todo in todoList" :key="todo.id" :to="linkOption(todo)">
+                        <router-link class="mint-cell" v-for="doc in docList" :key="doc.id" :to="linkOption(doc)">
                             <div class="mint-cell-wrapper">
                                 <div class="mint-cell-value">
-                                    <span class="mint-cell-text">{{todo.title}}</span> 
                                     <span class="mint-cell-label">
-                                    	<span class="flow-type" :class="'flow-type'+flowIndex(todo.definitionId_)" v-if="todo.flowName">{{todo.flowName}}</span>
-                                    	<span class="create-date">{{parseTimeDate(todo.createDate)}}</span>
+                                    	<span class="create-date">{{parseTimeDate(doc.operateTime)}}</span>
                                     </span>
+                                    <span class="mint-cell-text">{{doc.processTitle}}</span> 
                                 </div>
+                                <i class="jcm-arrows"></i>
                             </div>
                         </router-link>
                     </div>
-                </div>
-                <div v-show="selected == '2' || selected == '3'">
-                    <Loadmore  :on-infinite="onInfinite" :options="loadmoreOpt" :init-scroll="initScroll" :style="{ height: wrapperHeight + 'px'}">
-                        <div class="mint-tab-item">
-                            <router-link class="mint-cell" v-for="myObj in (selected == '2' ? receList : sendList)" :key="myObj.id" :to="linkOption(myObj)">
-                                <div class="mint-cell-wrapper">
-                                    <div class="mint-cell-value">
-                                        <span class="mint-cell-text">{{myObj.title}}</span> 
-                                        <span class="mint-cell-label">
-	                                    	<span class="flow-type" :class="'flow-type'+flowIndex(myObj.definitionId_)" v-if="myObj.flowName">{{myObj.flowName}}</span>
-	                                    	<span class="create-date">{{parseTimeDate(myObj.createDate)}}</span>
-	                                    </span>
-                                    </div>
-                                </div>
-                            </router-link>
-                        </div>
-                    </Loadmore>
                 </div>
             </div>
         </div>
@@ -109,12 +74,8 @@
                 },
                 //收文发文分页数量存储
                 pageNums: {},
-                //待办存储
-                todoList:[],
-                //收文
-                receList:[],
-                //发文
-                sendList:[],
+                //已办//待办存储
+                docList:[],
             }
         },
         methods: {
@@ -126,7 +87,7 @@
                 this.getDOCList();
             },
             parseTimeDate(stamp) {
-                return Util.format(new Date(stamp), 'yyyy-MM-dd');
+                return Util.format(new Date(stamp), 'yyyy-mm-dd hh:mm:ss');
             },
             //公文列表
             getDOCList() {
@@ -134,18 +95,14 @@
                 //加载loading
                 _this.showLoading();
                 //获取数据
-                _this.Api.DOC[_this.selected == '2' ? 'getReceiveFlows' : 'getSendFlows'](_this.pageNums[_this.selected]).then(function(res) {
+                _this.Api.DOC[_this.selected == '1' ? 'getToDosList' : 'getDoneList'](_this.pageNums[_this.selected]).then(function(res) {
                     if (res.data.code === '000000') {
-                        let data = res.data.body;
-                        if(_this.selected == 2){
-                            _this.receList = _this.cacheData['rece'] = _this.cacheData['rece'].concat(Array.isArray(data) ? data : JSON.parse(data));
-                        }else{
-                            _this.sendList = _this.cacheData['send'] = _this.cacheData['send'].concat(Array.isArray(data) ? data : JSON.parse(data));
-                        }
+                        _this.docList = res.data.body;
+                        console.log(_this.docList);
                         //传入当前页码,保证插件计算是否有下一页时使用插件内部的变量导致出错问题
                         _this.mescroll.endSuccess(data.length , null, _this.pageNums[_this.selected]);
                     } else {
-                        _this.receList = _this.sendList = [];
+                       _this.docList = [];
                         Toast(res.data.errormsg);
                     }
                     _this.$nextTick(() => {
@@ -155,7 +112,7 @@
                     _this.hideLoading();
                 })
             },
-            //待办列表
+           /*  //待办列表
             getToDoList() {
                 var _this = this;
                 _this.showLoading();
@@ -172,7 +129,7 @@
                 }).catch(error => {
                     _this.hideLoading();
                 })
-            },
+            }, */
             //流程列表
             flowList() {
                 var _this = this;
@@ -261,11 +218,6 @@
         	}
         },
         mounted() {
-            this.cacheData = {
-                todo: [],
-                rece: [],
-                send: []
-            };
             this.searchW();
             //请求列表数据
             this.flowList();
@@ -275,17 +227,7 @@
         watch: {
             selected: function() {
             	this.val='';
-                this.cacheData = {
-                    todo: [],
-                    rece: [],
-                    send: []
-                };
-                if(this.selected == '1'){
-                    this.getToDoList();
-                }else{
-                    this.pageNums[this.selected] = 0;
-                    this.getDOCList();
-                }
+               this.getDOCList();
             },
             val: function(value){
             	if(value.length>0){
@@ -315,10 +257,9 @@
 </script>
  
 <style lang="scss">
-    @import '../../../assets/sass/base.scss';
+    @import '../../assets/sass/params';
     .archives-untreated {
     	.create-date{
-    		float: right;
     		font-size: 14px;
     		margin-top: 3px;
     	}
@@ -377,7 +318,7 @@
             height: 21px;
             padding: 1px;
             top: 17px;
-            background: url(../../../assets/attence/images/jiantou0.png) center center no-repeat;
+            background: url(../../assets/attence/images/jiantou0.png) center center no-repeat;
             box-shadow: none;
         }
         input[type=search]::-webkit-search-cancel-button {
@@ -546,6 +487,9 @@
                 height: 80px;
                 align-items: stretch;
                 border-bottom: $list-bottom-border;
+                i{
+                    vertical-align: middle;
+                }
                 .mint-cell-title {
                     flex: none;
                 }

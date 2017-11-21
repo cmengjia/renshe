@@ -1,65 +1,59 @@
 <template>
-  <div>
-  	<h1>吉林省人社厅协同办公平台</h1>
-	<mt-navbar v-model="selected">
-        <mt-tab-item id="1">首页
-            <div class="info-badge" v-show="unread">
-                <mt-badge size="small" color="#fc5461"></mt-badge>
-            </div>
-        </mt-tab-item>
-		<mt-tab-item id="1">公文处理
-            <div class="info-badge" v-show="unread">
-                <mt-badge size="small" color="#fc5461"></mt-badge>
-            </div>
-        </mt-tab-item>
-        <router-link to="/info">
-        电子邮件
-        
-        </router-link>
-		<mt-tab-item id="1">电子邮件
-            <div class="info-badge" v-show="unread">
-                <mt-badge size="small" color="#fc5461"></mt-badge>
-            </div>
-        </mt-tab-item>
-		<mt-tab-item id="1">工作任务
-            <div class="info-badge" v-show="unread">
-                <mt-badge size="small" color="#fc5461"></mt-badge>
-            </div>
-        </mt-tab-item>
-		<mt-tab-item id="1">即时通讯
-            <div class="info-badge" v-show="unread">
-                <mt-badge size="small" color="#fc5461"></mt-badge>
-            </div>
-        </mt-tab-item>
-		<mt-tab-item id="1">通讯录</mt-tab-item>
-    </mt-navbar>
-  </div>
-	
+    <div class="header">
+        <h1><img src="../../../static/images/cockade.png" width='30' height='30' >吉林省人社厅协同办公平台</h1>
+        <div class="nav">
+            <router-link to="/rs" class="active">首页</router-link>
+            <router-link to="/doc">公文处理</router-link>
+            <router-link to="/mail/home">电子邮件</router-link>
+            <router-link to="/email">工作任务</router-link>
+            <router-link to="/email">即时通讯</router-link>
+            <router-link to="/email">通讯录</router-link>
+        </div>
+    </div>
 </template>
 
 <script>
-import {Indicator, Toast} from 'mint-ui';
-import { Search } from 'mint-ui';
-import Util from '@/libs/util.js';
-import Loadmore from '@/components/loadmore';
 export default {
   name: 'jc-header',
    data() {
         return {
-            //当前选中的栏目
-            selected: '1',
-            unread: true,
+
         }
    }
 }
 </script>
-
 <style>
-	h1{
+	.header h1{
 		background: #13529f;
 		height: 52px;
 		line-height: 52px;
-		font-size: 22px;
+		font-size: 16px !important;
 		color: #fff;
+        padding-left: 10px;
 	}
+    .header h1 img{
+        vertical-align: middle;
+        margin-right: 10px;
+    }
+    .nav{
+        height: 42px;
+        display: table;
+        width: 100%;
+        background: url('../../../static/images/navBg.jpg') repeat-x;
+    }
+    .nav a{
+        display: table-cell;
+        height: 42px;
+        line-height: 42px;
+        text-align: center;
+        font-size: 14px;
+        color: #000;
+    }
+    .nav a.active{
+        color: #13529f;
+        background: #dedede;
+        border-radius : 10px;
+        background: url('../../../static/images/navActive.png') repeat-x;
+        background-size: 100% 100%;
+    }
 </style>

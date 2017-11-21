@@ -4,7 +4,7 @@
             <mt-swipe-item v-for="pic in info4RtxPicList" :key="pic.id">
                 <router-link 
                         class="link"
-                        :to="{ path: 'detail', query: { 
+                        :to="{ path: '/home/detail', query: { 
                             id: pic.id,
                             nodeId: pic.curNodeId_?pic.curNodeId_:'',
                             instanceId: pic.instanceId_?pic.instanceId_:'',
@@ -33,7 +33,7 @@
                 <div style="width:100%;">
                     <router-link class="mint-cell" v-for="info in info4RtxList"
                         :key="info.id"
-                        :to="{ path: 'detail', query: { 
+                        :to="{ path: '/home/detail', query: { 
                             id: info.id,
                             nodeId: info.curNodeId_?info.curNodeId_:'',
                             instanceId: info.instanceId_?info.instanceId_:'',

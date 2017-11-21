@@ -1,6 +1,4 @@
-
-const MIALROUTE = [
-    {
+const MIALROUTE = [{
         path: '/contacts',
         redirect: '/contacts/100001',
         replace: true
@@ -27,7 +25,7 @@ const MIALROUTE = [
             title: '邮件首页'
         }
     }, {
-        path: '/compose',
+        path: '/mail/compose',
         name: 'Compose',
         component: resolve => require(['@/modules/email/email/compose.vue'], resolve),
         meta: {

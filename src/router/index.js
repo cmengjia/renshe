@@ -5,23 +5,31 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import store from '@/store';
 //信息管理路由配置
-import {INFOROUTER} from '@/modules/info/router.js';
+import { INFOROUTER } from '@/modules/info/router.js';
 //登录页路由配置,   build时应注释掉这行代码
 import { LOFINROUTER } from '@/modules/login/router.js';
-
 //邮件管理
 import { MIALROUTE } from '@/modules/email/router.js';
-
+//公文管理
+import { DOCROUTER } from '@/modules/doc/router.js';
 Vue.use(Router);
 
 const routerConfig = {
-    routes: [
-        {
+    routes: [{
             path: '/rs',
             name: 'Rs',
             component: resolve => require(['@/modules/home/home.vue'], resolve),
             meta: {
                 title: '首页'
+            }
+        },
+        {
+            path: '/home/detail',
+            name: 'HomeDetail',
+            component: resolve => require(['@/modules/home/detail.vue'], resolve),
+            meta: {
+                title: '首页详细',
+                keepAlive: false
             }
         },
         {
@@ -31,11 +39,11 @@ const routerConfig = {
     ]
 }
 
-if(process.env.NODE_ENV != 'production'){
+if (process.env.NODE_ENV != 'production') {
     routerConfig.routes = routerConfig.routes.concat(LOFINROUTER);
 }
 
-routerConfig.routes = routerConfig.routes.concat(INFOROUTER ,MIALROUTE);
+routerConfig.routes = routerConfig.routes.concat(INFOROUTER, MIALROUTE, DOCROUTER);
 
 
 const router = new Router(routerConfig);
@@ -49,7 +57,7 @@ router.beforeEach((to, from, next) => {
     })
     next();
 });
-router.afterEach(function (to) {
+router.afterEach(function(to) {
     store.commit('footerState', {
         isfooterState: to.name === 'Home'
     })

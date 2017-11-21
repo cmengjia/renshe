@@ -21,12 +21,13 @@ module.exports = {
         // Set to `true` or `false` to always turn it on or off
         bundleAnalyzerReport: process.env.npm_config_report,
         //发布环境请求jcmp地址
-        server: 'http://192.168.150.15:8000/goa'
+        //server: 'http://192.168.150.15:8000/goa'
+        server: 'http://192.168.160.10:8080/goa'
     },
     dev: {
         env: require('./dev.env'),
         port: 7080,
-        ip: '192.168.220.105',
+        ip: '192.168.201.35',
         autoOpenBrowser: true,
         assetsSubDirectory: 'static',
         assetsPublicPath: '/',

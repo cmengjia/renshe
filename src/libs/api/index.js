@@ -20,7 +20,11 @@ export default {
         },
         //获取待办公文所有数据
         getToDosList() {
-            return HTTP.get('/getToDosList');
+            return HTTP.get('/workGetTodoList');
+        },
+        //获取已办公文所有数据
+        getDoneList() {
+            return HTTP.get('/workGetDoneList');
         },
         //获取收文列表
         getReceiveFlows(pageNum) {
@@ -126,7 +130,7 @@ export default {
          * }
          */
         getInfoById(opt) {
-            let url = '/getInfoDetail?id=' + opt.id;
+            let url = '/getInfoById?id=' + opt.id;
             if (opt.definitionId) {
                 url = url + '&definitionId=' + opt.definitionId + '&nodeId=' + opt.nodeId + '&instanceId=' + opt.instanceId + '&businessKey=' + opt.businessKey;
             }
@@ -259,11 +263,11 @@ export default {
         },
         //设置星标邮件
         addStarRtx(opt) {
-            return HTTP.post('/addStarRtx?mailId=' + opt);
+            return HTTP.post('/addStarMail?mailId=' + opt);
         },
         //取消星标邮件
         delStarRtx(opt) {
-            return HTTP.post('/delStarRtx?mailId=' + opt);
+            return HTTP.post('/delStarMail?mailId=' + opt);
         },
         //删除邮件
         delMailRtx(opt, mailFolderId) {
