@@ -12,6 +12,8 @@ import { LOFINROUTER } from '@/modules/login/router.js';
 import { MIALROUTE } from '@/modules/email/router.js';
 //公文管理
 import { DOCROUTER } from '@/modules/doc/router.js';
+//
+import { TASKROUTER } from '@/modules/task/router.js';
 Vue.use(Router);
 
 const routerConfig = {
@@ -43,7 +45,7 @@ if (process.env.NODE_ENV != 'production') {
     routerConfig.routes = routerConfig.routes.concat(LOFINROUTER);
 }
 
-routerConfig.routes = routerConfig.routes.concat(INFOROUTER, MIALROUTE, DOCROUTER);
+routerConfig.routes = routerConfig.routes.concat(INFOROUTER, MIALROUTE, DOCROUTER ,TASKROUTER);
 
 
 const router = new Router(routerConfig);
