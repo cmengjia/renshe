@@ -8,13 +8,17 @@
         </mt-navbar>
         <div class="title">重点任务概览<i class="jcm-youjiantou1"></i></div>
         <mt-tab-container v-model="selected">
-            <mt-tab-container-item id="1" >
-                <p>工作项目：增加就业机会，控制失业率 <span>汇报时间：2017-11-12</span></p>
-                <p>推进情况：本月增加就业机会300个 <span>推进状态：正常</span></p>
-                <p><span>郭晓光</span><span>生就业服务局</span></p>
+            <mt-tab-container-item id="1">
+                <div v-for="it in importantTaskList">
+                    <p>{{it.reportTitle}}<span>汇报时间：{{it.reportDate}}</span></p>
+                    <p>推进情况：{{it.推进情况}}<span>推进状态：{{it.状态}}</span></p>
+                    <p><span>{{it.reportUser}}</span><span>{{it.reportUnit}}</span></p>
+                </div>
             </mt-tab-container-item>
             <mt-tab-container-item id="2">
-                <mt-cell v-for="n in 4" :title="'content ' + n"/>
+                <div v-for="gt in generalTaskList">
+                    <p>{{gt.grneralTitle}}<span>生成日期：{{gt.grneralDate}}</span></p>
+                </div>
             </mt-tab-container-item>
         </mt-tab-container>
     </div>
@@ -23,7 +27,9 @@
     export default {
         data(){
             return {
-                selected: '1'
+                selected: '1',
+                importantTaskList: [],
+                generalTaskList:[]
             }
         }
     }
